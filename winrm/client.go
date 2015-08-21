@@ -46,6 +46,21 @@ func NewClientWithParameters(endpoint *Endpoint, user, password string, params *
 	return
 }
 
+// NewClientWithParametersAndTransport will create a new remote client on url, connecting with user and password
+// This function doesn't connect (connection happens only when CreateShell is called)
+func NewClientWithParametersAndTransport(endpoint *Endpoint, user, password string, params *Parameters,transport *http.Transport) (client *Client, err error) {
+	client = &Client{
+		Parameters: *params,
+		username:   user,
+		password:   password,
+		url:        endpoint.url(),
+		http:       Http_post,
+		useHTTPS:   endpoint.HTTPS,
+		transport:  transport,
+	}
+	return
+}
+
 // newTransport will create a new HTTP Transport, with options specified within the endpoint configuration
 func newTransport(endpoint *Endpoint) (*http.Transport, error) {
 	transport := &http.Transport{
